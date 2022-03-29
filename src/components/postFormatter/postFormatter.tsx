@@ -1,22 +1,33 @@
-import { useState, useEffect, ReactElement } from "react";
+import { useState, useEffect, useContext, ReactElement } from "react";
 import { IUser } from "../../models/User.model";
 import { IComment } from "../../models/Comment.model";
-import { getUser, getComments } from "../../services/posts.service";
+import { PostsContext } from "../../store/posts.context";
 
 const postFormatter =
   (Component: any) =>
-  ({ postData }: any): ReactElement => {
+  ({ postData, hasLink }: any): ReactElement => {
     const [userData, setUserData] = useState<IUser>();
-    const [commentsData, setCommentsData] = useState<IComment[]>([]);
+    const [commentsData, setCommentsData] = useState<IComment[]>();
+
+    const postsContext = useContext(PostsContext);
 
     useEffect(() => {
-      // fetch comments and user for each post, since
-      // comments have their own ep accessed via "id"
-      // and user also
-      if (postData) {
-        getUser(postData.userId).then((resp: IUser) => setUserData(resp));
-        getComments(postData.id).then((resp: IComment[]) =>
-          setCommentsData(resp)
+      if (!postData) return;
+
+      if (postsContext?.users.find((user) => user.id === postData.userId)) {
+        setUserData(
+          postsContext.users.find((user) => user.id === postData.userId)
+        );
+      }
+
+      //! Comments baguje
+      if (
+        postsContext?.comments.find((comment) => comment.postId === postData.id)
+      ) {
+        setCommentsData(
+          postsContext?.comments.filter(
+            (comment) => comment.postId === postData.id
+          )
         );
       }
     }, []);
@@ -26,6 +37,7 @@ const postFormatter =
         postData={postData}
         userData={userData}
         commentsData={commentsData}
+        hasLink={hasLink}
       />
     );
   };

@@ -1,11 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+
+import PostsProvider from "./store/posts.context";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <PostsProvider>
+      <App />
+    </PostsProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );

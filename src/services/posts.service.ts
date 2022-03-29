@@ -14,12 +14,17 @@ export const getComments = async (id: number) => {
   return data
 }
 
+export const getAllComments = async () => {
+  const { data } = await axios.get<IComment[]>(`https://jsonplaceholder.typicode.com/comments`)
+  return data
+}
+
 export const getUser = async (id: number) => {
   const { data } = await axios.get<IUser>(`https://jsonplaceholder.typicode.com/users/${id}`)
   return data
 }
 
-export const getUsers = async (id: number) => {
-  const { data } = await axios.get<IUser[]>(`https://jsonplaceholder.typicode.com/users/${id}`)
+export const getUsers = async () => {
+  const { data } = await axios.get<IUser[]>(`https://jsonplaceholder.typicode.com/users`)
   return data
 }
