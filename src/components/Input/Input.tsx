@@ -1,4 +1,5 @@
 import { FunctionComponent } from "react";
+import "./_input.scss";
 
 const Input: FunctionComponent<{
   type: string;
@@ -8,6 +9,7 @@ const Input: FunctionComponent<{
 }> = ({ type, value, changeFn, placeholder }) => {
   return (
     <input
+      className="input"
       type={type}
       value={value}
       onChange={(e) => changeFn(e.target.value)}

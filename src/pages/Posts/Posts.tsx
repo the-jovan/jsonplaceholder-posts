@@ -5,6 +5,7 @@ import {
   FunctionComponent,
   useContext,
 } from "react";
+import "./_posts.scss";
 
 import { IPost } from "../../models/Post.model";
 import {
@@ -86,15 +87,17 @@ const Posts: FunctionComponent = (): ReactElement => {
   };
 
   return (
-    <>
+    <div className="posts">
       <Input
         type="text"
         changeFn={filterPosts}
         value={filter.term}
         placeholder="Filter posts"
       />
-      {filter.term ? renderPosts(filter.posts) : renderPosts(posts)}
-    </>
+      <div className="posts__wrapper">
+        {filter.term ? renderPosts(filter.posts) : renderPosts(posts)}
+      </div>
+    </div>
   );
 };
 

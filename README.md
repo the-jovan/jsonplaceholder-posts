@@ -23,3 +23,6 @@ Day 3
 #7 - Add error handling for invalid post url
 
 - fully functional without a single scss line, so it's as ugly as it gets, but it works...
+
+#8 - Added basic scss just to make it somewhat tolerable, still ugly though, but
+I'll get to it if there's time... duty calls a lot these days :(

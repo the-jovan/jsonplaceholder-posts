@@ -1,4 +1,5 @@
 import { FunctionComponent } from "react";
+import "./_post.scss";
 import { useNavigate } from "react-router-dom";
 
 import { IUser } from "../../models/User.model";
@@ -33,11 +34,14 @@ const Post: FunctionComponent<{
   };
 
   return (
-    <div onClick={() => link && redirect()}>
-      <User userData={userData} />
-      {/* <LoggedUser userData={userData} /> */}
+    <div
+      className={`post${link ? " post--link" : ""}`}
+      onClick={() => link && redirect()}
+    >
       <PostInfo postData={postData} />
       {/* <LoggedPostInfo postData={postData} /> */}
+      <User userData={userData} />
+      {/* <LoggedUser userData={userData} /> */}
       {commentsData?.map(
         (comment: IComment) =>
           comment.postId === postData.id && (
