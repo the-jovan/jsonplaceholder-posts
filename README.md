@@ -12,3 +12,14 @@ Day 2
 and also pass data via navigate to individual post, thus reducing all api calls to just 3 (ofc, additional logic will need to be added to fetch individual post, if its
 url is visited directly)
 #3 Bug >> Comments are not rendering always, they tend to show when app is rendered first time, but on page refresh they do not...
+
+Day 3
+#1 - Refactor Post component (split it to User, PostInfo, Comment)
+#2 - Updated fetching all posts and related data in Posts component
+#3 - Fixed comments (and users) related bug
+#4 - Added posts filtering logic and custom Input component
+#5 - Connected Post to SinglePost with router navigate, which passes state
+#6 - Added SinglePost data fetching logic in case of visiting post directly
+#7 - Add error handling for invalid post url
+
+- fully functional without a single scss line, so it's as ugly as it gets, but it works...

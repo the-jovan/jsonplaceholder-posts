@@ -13,26 +13,30 @@ import {
   getUsers,
 } from "../../services/posts.service";
 
-import postFormatter from "../../components/postFormatter/postFormatter";
 import Post from "../../components/Post/Post";
+import Input from "../../components/Input/Input";
 
 import { PostsContext } from "../../store/posts.context";
-
-const FormattedPost = postFormatter(Post);
+import { IUser } from "../../models/User.model";
+import { IComment } from "../../models/Comment.model";
 
 const Posts: FunctionComponent = (): ReactElement => {
   const [posts, setPosts] = useState<IPost[]>([]);
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [comments, setComments] = useState<IComment[]>([]);
+
+  const [filter, setFilter] = useState<{
+    term: string;
+    posts: IPost[];
+  }>({
+    term: "",
+    posts: [],
+  });
 
   const postsContext = useContext(PostsContext);
 
   useEffect(() => {
-    /* Not the best idea but for now:
-      Check if all posts, users and comments are fetched (when trying to display all posts)
-      if they are not (or some are not) use endpoint that returns everyone, instead of
-      going post-by-post to fetch one-by-one
-    */
-
-    if (postsContext?.posts.length !== 100) {
+    if (!postsContext?.posts.length) {
       getPosts().then((resp) => {
         setPosts(resp);
         postsContext?.setPosts(resp);
@@ -41,34 +45,55 @@ const Posts: FunctionComponent = (): ReactElement => {
       setPosts(postsContext.posts);
     }
 
-    if (postsContext?.users.length !== 10) {
+    if (!postsContext?.users.length) {
       getUsers().then((resp) => {
+        setUsers(resp);
         postsContext?.setUsers(resp);
       });
+    } else {
+      setUsers(postsContext?.users);
     }
 
-    if (postsContext?.comments.length !== 500) {
+    if (!postsContext?.comments.length) {
       getAllComments().then((resp) => {
+        setComments(resp);
         postsContext?.setComments(resp);
       });
+    } else {
+      setComments(postsContext.comments);
     }
   }, []);
 
+  const filterPosts = (e: any) => {
+    let filteredPosts = posts.filter((post: IPost) => post.body.includes(e));
+
+    setFilter({
+      term: e,
+      posts: filteredPosts,
+    });
+  };
+
+  const renderPosts = (postsArr: IPost[]) => {
+    return postsArr.map((post: IPost) => (
+      <Post
+        key={post.id}
+        link={post.id}
+        userData={users.find((user) => user.id === post.userId)!}
+        postData={post}
+        commentsData={comments}
+      />
+    ));
+  };
+
   return (
     <>
-      <button onClick={() => console.log(postsContext)}>Log context</button>
-      {/* we're passing user/comment/post data here to display them via navigate
-      state, so that we avoid refetching post (unless we get there directly, which
-      will be added shortly) */}
-      {posts.map((post: IPost) => (
-        <FormattedPost
-          key={post.id}
-          postData={post}
-          hasLink={post.id}
-          userData
-          commentsData
-        />
-      ))}
+      <Input
+        type="text"
+        changeFn={filterPosts}
+        value={filter.term}
+        placeholder="Filter posts"
+      />
+      {filter.term ? renderPosts(filter.posts) : renderPosts(posts)}
     </>
   );
 };
