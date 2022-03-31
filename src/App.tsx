@@ -39,6 +39,7 @@ const App: FunctionComponent = (): ReactElement => {
         />
       </Routes>
     </BrowserRouter>
+    // </ErrorBoundary>
   );
 };
 

@@ -1,10 +1,4 @@
-import {
-  useState,
-  useEffect,
-  ReactElement,
-  FunctionComponent,
-  useContext,
-} from "react";
+import { useState, ReactElement, FunctionComponent, useContext } from "react";
 import "./_posts.scss";
 
 import { IPost } from "../../models/Post.model";
@@ -12,8 +6,8 @@ import {
   getAllComments,
   getPosts,
   getUsers,
-  errorNotification,
 } from "../../services/posts.service";
+import useFetchData from "../../hooks/useFetchData";
 
 import Post from "../../components/Post/Post";
 import Input from "../../components/Input/Input";
@@ -22,14 +16,29 @@ import loggerComponent from "../../hocs/loggerComponent";
 import { PostsContext } from "../../store/posts.context";
 import { IUser } from "../../models/User.model";
 import { IComment } from "../../models/Comment.model";
-import { toast } from "react-toastify";
 
 const LoggedPost = loggerComponent(Post);
 
 const Posts: FunctionComponent = (): ReactElement => {
-  const [posts, setPosts] = useState<IPost[]>([]);
-  const [users, setUsers] = useState<IUser[]>([]);
-  const [comments, setComments] = useState<IComment[]>([]);
+  const postsContext = useContext(PostsContext);
+  const { posts } = useFetchData({
+    item: "posts",
+    contextItem: postsContext?.posts as IPost[],
+    setContextItem: (val: any) => postsContext?.setPosts(val),
+    callFn: () => getPosts(),
+  });
+  const { users } = useFetchData({
+    item: "users",
+    contextItem: postsContext?.users as IUser[],
+    setContextItem: (val: any) => postsContext?.setUsers(val),
+    callFn: () => getUsers(),
+  });
+  const { comments } = useFetchData({
+    item: "comments",
+    contextItem: postsContext?.comments as IComment[],
+    setContextItem: (val: any) => postsContext?.setComments(val),
+    callFn: () => getAllComments(),
+  });
 
   const [filter, setFilter] = useState<{
     term: string;
@@ -38,55 +47,6 @@ const Posts: FunctionComponent = (): ReactElement => {
     term: "",
     posts: [],
   });
-
-  const postsContext = useContext(PostsContext);
-
-  useEffect(() => {
-    if (!postsContext?.posts.length) {
-      getPosts()
-        .then((resp) => {
-          setPosts(resp);
-          postsContext?.setPosts(resp);
-        })
-        .catch((err) => {
-          console.error(err);
-          errorNotification("Something went wrong getting all posts.");
-          setPosts([]);
-        });
-    } else {
-      setPosts(postsContext.posts);
-    }
-
-    if (!postsContext?.users.length) {
-      getUsers()
-        .then((resp) => {
-          setUsers(resp);
-          postsContext?.setUsers(resp);
-        })
-        .catch((err) => {
-          console.error(err);
-          errorNotification("Something went wrong getting all users.");
-          setUsers([]);
-        });
-    } else {
-      setUsers(postsContext?.users);
-    }
-
-    if (!postsContext?.comments.length) {
-      getAllComments()
-        .then((resp) => {
-          setComments(resp);
-          postsContext?.setComments(resp);
-        })
-        .catch((err) => {
-          console.error(err);
-          errorNotification("Something went wrong getting all comments.");
-          setComments([]);
-        });
-    } else {
-      setComments(postsContext.comments);
-    }
-  }, []);
 
   const filterPosts = (e: any) => {
     let filteredPosts = posts.filter((post: IPost) => post.body.includes(e));
@@ -104,7 +64,7 @@ const Posts: FunctionComponent = (): ReactElement => {
         componentName="Post"
         key={post.id}
         link={post.id}
-        userData={users.find((user) => user.id === post.userId)!}
+        userData={users.find((user: IUser) => user.id === post.userId)!}
         postData={post}
         commentsData={comments}
       />
