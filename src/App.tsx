@@ -17,9 +17,23 @@ const App: FunctionComponent = (): ReactElement => {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<LoggedHome />} />
-        <Route path="/posts" element={<LoggedPosts />} />
-        <Route path="/post/:id" element={<LoggedSinglePost />} />
+        <Route
+          path="/"
+          element={<LoggedHome helloMsg="Hello from" componentName="Home" />}
+        />
+        <Route
+          path="/posts"
+          element={<LoggedPosts helloMsg="Hello from" componentName="Posts" />}
+        />
+        <Route
+          path="/post/:id"
+          element={
+            <LoggedSinglePost
+              helloMsg="Hello from"
+              componentName="SinglePost"
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

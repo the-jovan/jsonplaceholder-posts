@@ -26,3 +26,6 @@ Day 3
 
 #8 - Added basic scss just to make it somewhat tolerable, still ugly though, but
 I'll get to it if there's time... duty calls a lot these days :(
+
+Day 4
+#1 - Added "Hello from" hoc

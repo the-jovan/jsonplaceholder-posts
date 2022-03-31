@@ -16,10 +16,13 @@ import {
 
 import Post from "../../components/Post/Post";
 import Input from "../../components/Input/Input";
+import loggerComponent from "../../hocs/loggerComponent";
 
 import { PostsContext } from "../../store/posts.context";
 import { IUser } from "../../models/User.model";
 import { IComment } from "../../models/Comment.model";
+
+const LoggedPost = loggerComponent(Post);
 
 const Posts: FunctionComponent = (): ReactElement => {
   const [posts, setPosts] = useState<IPost[]>([]);
@@ -76,7 +79,16 @@ const Posts: FunctionComponent = (): ReactElement => {
 
   const renderPosts = (postsArr: IPost[]) => {
     return postsArr.map((post: IPost) => (
-      <Post
+      // <Post
+      //   key={post.id}
+      //   link={post.id}
+      //   userData={users.find((user) => user.id === post.userId)!}
+      //   postData={post}
+      //   commentsData={comments}
+      // />
+      <LoggedPost
+        helloMsg="Hello from"
+        componentName="Post"
         key={post.id}
         link={post.id}
         userData={users.find((user) => user.id === post.userId)!}
