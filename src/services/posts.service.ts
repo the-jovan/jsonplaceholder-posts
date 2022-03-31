@@ -3,6 +3,7 @@ import axios from "axios";
 import { IUser } from "../models/User.model";
 import { IPost } from "../models/Post.model";
 import { IComment } from "../models/Comment.model";
+import { toast } from "react-toastify";
 
 export const getPosts = async () => {
   const { data } = await axios.get<IPost[]>(
@@ -45,3 +46,15 @@ export const getUsers = async () => {
   );
   return data;
 };
+
+export function errorNotification(msg: string) {
+  toast.error(msg, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: true,
+    closeOnClick: false,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+}

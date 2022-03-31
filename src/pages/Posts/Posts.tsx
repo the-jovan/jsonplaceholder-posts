@@ -12,6 +12,7 @@ import {
   getAllComments,
   getPosts,
   getUsers,
+  errorNotification,
 } from "../../services/posts.service";
 
 import Post from "../../components/Post/Post";
@@ -21,6 +22,7 @@ import loggerComponent from "../../hocs/loggerComponent";
 import { PostsContext } from "../../store/posts.context";
 import { IUser } from "../../models/User.model";
 import { IComment } from "../../models/Comment.model";
+import { toast } from "react-toastify";
 
 const LoggedPost = loggerComponent(Post);
 
@@ -41,28 +43,46 @@ const Posts: FunctionComponent = (): ReactElement => {
 
   useEffect(() => {
     if (!postsContext?.posts.length) {
-      getPosts().then((resp) => {
-        setPosts(resp);
-        postsContext?.setPosts(resp);
-      });
+      getPosts()
+        .then((resp) => {
+          setPosts(resp);
+          postsContext?.setPosts(resp);
+        })
+        .catch((err) => {
+          console.error(err);
+          errorNotification("Something went wrong getting all posts.");
+          setPosts([]);
+        });
     } else {
       setPosts(postsContext.posts);
     }
 
     if (!postsContext?.users.length) {
-      getUsers().then((resp) => {
-        setUsers(resp);
-        postsContext?.setUsers(resp);
-      });
+      getUsers()
+        .then((resp) => {
+          setUsers(resp);
+          postsContext?.setUsers(resp);
+        })
+        .catch((err) => {
+          console.error(err);
+          errorNotification("Something went wrong getting all users.");
+          setUsers([]);
+        });
     } else {
       setUsers(postsContext?.users);
     }
 
     if (!postsContext?.comments.length) {
-      getAllComments().then((resp) => {
-        setComments(resp);
-        postsContext?.setComments(resp);
-      });
+      getAllComments()
+        .then((resp) => {
+          setComments(resp);
+          postsContext?.setComments(resp);
+        })
+        .catch((err) => {
+          console.error(err);
+          errorNotification("Something went wrong getting all comments.");
+          setComments([]);
+        });
     } else {
       setComments(postsContext.comments);
     }
@@ -79,13 +99,6 @@ const Posts: FunctionComponent = (): ReactElement => {
 
   const renderPosts = (postsArr: IPost[]) => {
     return postsArr.map((post: IPost) => (
-      // <Post
-      //   key={post.id}
-      //   link={post.id}
-      //   userData={users.find((user) => user.id === post.userId)!}
-      //   postData={post}
-      //   commentsData={comments}
-      // />
       <LoggedPost
         helloMsg="Hello from"
         componentName="Post"

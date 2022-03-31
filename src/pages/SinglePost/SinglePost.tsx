@@ -6,7 +6,12 @@ import { IComment } from "../../models/Comment.model";
 import { IPost } from "../../models/Post.model";
 import { IUser } from "../../models/User.model";
 
-import { getPost, getUser, getComments } from "../../services/posts.service";
+import {
+  getPost,
+  getUser,
+  getComments,
+  errorNotification,
+} from "../../services/posts.service";
 
 const SinglePost = (): ReactElement => {
   const [postData, setPostData] = useState<IPost>();
@@ -38,7 +43,10 @@ const SinglePost = (): ReactElement => {
           );
         })
         .catch((err) => {
-          if (err.response.status === 404) setInvalidUrl(true);
+          if (err.response.status === 404) {
+            errorNotification("Something went wrong trying to get the post");
+            return setInvalidUrl(true);
+          }
         });
     }
   }, [location]);

@@ -29,3 +29,4 @@ I'll get to it if there's time... duty calls a lot these days :(
 
 Day 4
 #1 - Added "Hello from" hoc
+#2 - Added toastr and some error handling
