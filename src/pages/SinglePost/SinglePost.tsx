@@ -74,7 +74,7 @@ const SinglePost = (): ReactElement => {
     <>
       {postData && (
         <Post
-          postData={postData!}
+          postData={postData}
           userData={userData!}
           commentsData={commentsData!}
         />

@@ -3,14 +3,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 
 import Header from "./components/Header/Header";
-import Home from "./pages/Home/Home";
+// import Home from "./pages/Home/Home";
 import Posts from "./pages/Posts/Posts";
 import SinglePost from "./pages/SinglePost/SinglePost";
 
 import loggerComponent from "./hocs/loggerComponent";
 import { ToastContainer } from "react-toastify";
 
-const LoggedHome = loggerComponent(Home);
+// const LoggedHome = loggerComponent(Home);
 const LoggedPosts = loggerComponent(Posts);
 const LoggedSinglePost = loggerComponent(SinglePost);
 
@@ -20,12 +20,12 @@ const App: FunctionComponent = (): ReactElement => {
       <ToastContainer />
       <Header />
       <Routes>
-        <Route
+        {/* <Route
           path="/"
           element={<LoggedHome helloMsg="Hello from" componentName="Home" />}
-        />
+        /> */}
         <Route
-          path="/posts"
+          path="/"
           element={<LoggedPosts helloMsg="Hello from" componentName="Posts" />}
         />
         <Route
