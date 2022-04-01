@@ -1,7 +1,17 @@
-import { useState, ReactElement, FunctionComponent, useContext } from "react";
+import {
+  useState,
+  ReactElement,
+  FunctionComponent,
+  useContext,
+  useCallback,
+} from "react";
 import "./_posts.scss";
 
+import { PostsContext } from "../../store/posts.context";
 import { IPost } from "../../models/Post.model";
+import { IUser } from "../../models/User.model";
+import { IComment } from "../../models/Comment.model";
+
 import {
   getAllComments,
   getPosts,
@@ -13,14 +23,13 @@ import Post from "../../components/Post/Post";
 import Input from "../../components/Input/Input";
 import loggerComponent from "../../hocs/loggerComponent";
 
-import { PostsContext } from "../../store/posts.context";
-import { IUser } from "../../models/User.model";
-import { IComment } from "../../models/Comment.model";
-
 const LoggedPost = loggerComponent(Post);
 
 const Posts: FunctionComponent = (): ReactElement => {
   const postsContext = useContext(PostsContext);
+  // custom hook which checks if data exists in the context
+  // if not, fetches all data (callFn), returns the value, and sets it to context (for further use)
+  // if there is, gets it from the context and returns the value
   const { posts } = useFetchData({
     item: "posts",
     contextItem: postsContext?.posts as IPost[],
@@ -57,6 +66,7 @@ const Posts: FunctionComponent = (): ReactElement => {
     });
   };
 
+  // to render posts list depending on passed array of all posts or filtered ones
   const renderPosts = (postsArr: IPost[]) => {
     return postsArr.map((post: IPost) => (
       <LoggedPost

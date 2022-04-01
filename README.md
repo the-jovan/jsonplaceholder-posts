@@ -1,3 +1,6 @@
+(disclaimer: I have 4 months of testing xp with Jasmine/Karma in Angular, ~1 month of cypress testing as well, but 0 xp testing React apps. I'll take the L
+for that part here, as I am currently in process of learning React Testing Library and Jest...)
+
 Day 1
 #1 - Initializes app using create-react-app with typescript template
 #2 - Cleaned initial setup and installed required dependencies
@@ -30,3 +33,8 @@ I'll get to it if there's time... duty calls a lot these days :(
 Day 4
 #1 - Added "Hello from" hoc
 #2 - Added toastr and some error handling
+
+Cleanup, experimenting, learning new things
+#3 - Added useFetchData hook for fetching all posts
+
+Day 5

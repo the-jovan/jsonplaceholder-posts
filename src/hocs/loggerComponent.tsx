@@ -1,9 +1,11 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 
 const loggerComponent =
   (Component: any) =>
   (props: any): ReactElement => {
-    console.log(`${props.helloMsg} ${props.componentName}`);
+    useEffect(() => {
+      console.log(`${props.helloMsg} ${props.componentName}`);
+    }, []);
 
     return <Component {...props} />;
   };

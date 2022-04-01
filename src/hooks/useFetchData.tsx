@@ -12,13 +12,16 @@ const useFetchData = (props: {
   item: string;
   contextItem: PossibleData;
   setContextItem: (val: PossibleData) => void;
-  callFn: () => any;
+  callFn: () => Promise<PossibleData>;
 }) => {
   const { item, contextItem, setContextItem, callFn } = props;
+  // :|
   const [data, setData] = useState<any>([]);
 
   const location = useLocation();
 
+  // on location change (going from all posts to single and vice-versa)
+  // fetch all data or get data from context if it has been fetched before
   useEffect(() => {
     if (!contextItem.length) {
       callFn()

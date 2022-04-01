@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, memo, useEffect } from "react";
 import "./_post.scss";
 import { useNavigate } from "react-router-dom";
 
@@ -23,6 +23,9 @@ const Post: FunctionComponent<{
 }> = ({ userData, postData, commentsData, link }) => {
   const navigate = useNavigate();
 
+  // when clicking on post that has link prop, we're redirected to
+  // SinglePost route with passed post data that we access from location.state
+  // and that way we do not have to fetch data again
   const redirect = () => {
     navigate(`/post/${link}`, {
       state: {
@@ -63,4 +66,5 @@ const Post: FunctionComponent<{
   );
 };
 
+// export default memo(Post);
 export default Post;

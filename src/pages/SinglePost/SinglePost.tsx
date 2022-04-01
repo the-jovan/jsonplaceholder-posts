@@ -32,6 +32,8 @@ const SinglePost = (): ReactElement => {
   };
 
   useEffect(() => {
+    // in case user decided to go directly to url and therefore location
+    // doesn't have state to get data from
     if (!location.state) {
       getPost(location.pathname.split("/")[2])
         .then((resp: IPost) => {
