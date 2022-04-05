@@ -1,11 +1,5 @@
-import {
-  useState,
-  ReactElement,
-  FunctionComponent,
-  useContext,
-  useCallback,
-} from "react";
-import "./_posts.scss";
+import { useState, ReactElement, FunctionComponent, useContext } from "react";
+import { Grid, GridItem, VStack } from "@chakra-ui/react";
 
 import { PostsContext } from "../../store/posts.context";
 import { IPost } from "../../models/Post.model";
@@ -20,7 +14,7 @@ import {
 import useFetchData from "../../hooks/useFetchData";
 
 import Post from "../../components/Post/Post";
-import Input from "../../components/Input/Input";
+import CustomInput from "../../components/Input/Input";
 import loggerComponent from "../../hocs/loggerComponent";
 
 const LoggedPost = loggerComponent(Post);
@@ -69,30 +63,31 @@ const Posts: FunctionComponent = (): ReactElement => {
   // to render posts list depending on passed array of all posts or filtered ones
   const renderPosts = (postsArr: IPost[]) => {
     return postsArr.map((post: IPost) => (
-      <LoggedPost
-        helloMsg="Hello from"
-        componentName="Post"
-        key={post.id}
-        link={post.id}
-        userData={users.find((user: IUser) => user.id === post.userId)!}
-        postData={post}
-        commentsData={comments}
-      />
+      <GridItem colSpan={1} key={post.id} w="full">
+        <LoggedPost
+          helloMsg="Hello from"
+          componentName="Post"
+          link={post.id}
+          userData={users.find((user: IUser) => user.id === post.userId)!}
+          postData={post}
+          commentsData={comments}
+        />
+      </GridItem>
     ));
   };
 
   return (
-    <div className="posts">
-      <Input
+    <VStack>
+      <CustomInput
         type="text"
         changeFn={filterPosts}
         value={filter.term}
         placeholder="Filter posts"
       />
-      <div className="posts__wrapper">
+      <Grid w="full" templateColumns="repeat(3, 1fr)" gap={4}>
         {filter.term ? renderPosts(filter.posts) : renderPosts(posts)}
-      </div>
-    </div>
+      </Grid>
+    </VStack>
   );
 };
 

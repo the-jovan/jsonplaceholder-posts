@@ -1,11 +1,11 @@
 import { FunctionComponent, ReactElement } from "react";
-import "./_postinfo.scss";
+import { Text } from "@chakra-ui/react";
 import { IPost } from "../../models/Post.model";
 
 const PostInfo: FunctionComponent<{
   postData: IPost;
 }> = ({ postData }): ReactElement => {
-  return <div className="postinfo">{postData.body}</div>;
+  return <Text fontSize="3xl">{postData.body}</Text>;
 };
 
 export default PostInfo;

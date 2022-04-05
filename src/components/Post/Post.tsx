@@ -1,5 +1,5 @@
-import { FunctionComponent, memo, useEffect } from "react";
-import "./_post.scss";
+import React, { FunctionComponent } from "react";
+import { Container, Divider } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 import { IUser } from "../../models/User.model";
@@ -37,8 +37,10 @@ const Post: FunctionComponent<{
   };
 
   return (
-    <div
-      className={`post${link ? " post--link" : ""}`}
+    <Container
+      border="1px"
+      borderColor="#000"
+      maxW="full"
       onClick={() => link && redirect()}
     >
       <LoggedPostInfo
@@ -46,6 +48,7 @@ const Post: FunctionComponent<{
         componentName="PostInfo"
         postData={postData}
       />
+      <Divider />
       <LoggedUser
         helloMsg="Hello from"
         componentName="User"
@@ -54,15 +57,17 @@ const Post: FunctionComponent<{
       {commentsData?.map(
         (comment: IComment) =>
           comment.postId === postData.id && (
-            <LoggedComment
-              helloMsg="Hello from"
-              componentName="Comment"
-              key={comment.id}
-              commentData={comment}
-            />
+            <React.Fragment key={comment.id}>
+              <LoggedComment
+                helloMsg="Hello from"
+                componentName="Comment"
+                commentData={comment}
+              />
+              <Divider />
+            </React.Fragment>
           )
       )}
-    </div>
+    </Container>
   );
 };
 
